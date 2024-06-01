@@ -599,9 +599,10 @@ def delete_score(score_id):
     flash('Score deleted successfully!', 'success')
     return redirect(url_for('view_result'))  # Redirect to the admin dashboard page
 
-
+import os
 with app.app_context():
     db.create_all()
 if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+
