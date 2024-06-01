@@ -1,0 +1,14 @@
+flashtext==2.7
+Flask==3.0.2
+flask_sqlalchemy==3.1.1
+nltk==3.5
+pdfkit==1.0.0
+pywsd==1.2.4
+reportlab==4.1.0
+Requests==2.31.0
+summa==1.2.0
+yake==0.4.8
+gunicorn
+wn==0.0.23
+pywsd==1.2.4
+gunicorn

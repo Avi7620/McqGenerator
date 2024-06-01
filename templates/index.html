@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px; /* Adjust margin bottom for labels */
+    font-weight: bold; /* Make labels bold */
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%; /* Make input fields full width */
+    padding: 8px; /* Add padding to input fields */
+    border: 1px solid #ccc; /* Add border to input fields */
+    border-radius: 5px; /* Add border-radius to input fields */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    margin-bottom: 10px; /* Adjust margin bottom for input fields */
+}
+
+textarea {
+    resize: vertical; /* Allow vertical resizing of textarea */
+}
+
+input[type="file"] {
+    margin-top: 5px; /* Adjust margin top for file input */
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s; /* Add transition for hover effect */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Upload</h1>
+    <form action="/generate_mcqs" method="post" enctype="multipart/form-data">
+        <!-- Input field for test name -->
+        <label for="test_name">Test Name:</label>
+        <input type="text" id="test_name" name="test_name" required><br><br>
+        <!-- Text input or file upload -->
+        <label for="text_input">Enter Text:</label>
+        <textarea id="text_input" name="text_input" rows="5" cols="50"></textarea>
+        <p>Or</p>
+        <label for="file">Upload Text File:</label>
+        <input type="file" name="file">
+        <!-- Number of questions -->
+        <br><br>
+        <label for="num_questions">Number of Questions:</label>
+        <input type="number" id="num_questions" name="num_questions" min="1" value="5">
+        <br><br>
+        <input type="submit" value="Generate MCQs">
+    </form>
+</body>
+</html>

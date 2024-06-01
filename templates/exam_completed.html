@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Completed</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto; /* Center the container horizontally */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* Ensure the container is positioned relatively */
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d22212;
+        }
+
+        .correct-answer {
+            color: #034d14; /* Green color for correct answers */
+        }
+
+        .wrong-answer {
+            color: #22056d; /* Red color for wrong answers */
+        }
+
+        .logout-button {
+            position: absolute; /* Position the button absolutely */
+            top: 30px; /* Distance from the top */
+            right: 40px; /* Distance from the right */
+            padding: 10px 18px;
+            border-radius: 5px;
+            border: none;
+            background-color: #e31818;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 999; /* Ensure it appears above other elements */
+        }
+
+        .logout-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Exam Completed</h1>
+        <p>Hello, {{ username }}</p>
+        <p>Your Score: <span class="score">{{ score }} %</span></p>
+        <p>Correct Answers: <span class="correct-answer">{{ correct_answers }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Wrong Answers: <span class="wrong-answer">{{ wrong_answers }}</span></p>
+        
+        <p></p>
+    </div>
+
+    <form action="/logout" method="POST">
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
+</body>
+</html>

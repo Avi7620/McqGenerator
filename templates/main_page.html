@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <!-- Add any necessary CSS stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Reset default margin and padding */
+        body,
+        h1,
+        h2,
+        h3,
+        p,
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            /* Ensure it's above other elements */
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+            font-size: 30px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 16px;
+            line-height: 1.3;
+        }
+
+        /* Main styles */
+        main {
+            padding: 180px 20px 60px;
+            min-height: calc(100vh - 200px);
+            background-image: url("static/Screenshot 2024-02-19 103910.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Login links styles */
+        .login-links {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .login-links a {
+            margin-right: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .login-links a.admin-login {
+            color: #333;
+            background-color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .login-links a.user-login {
+            color: #fff;
+            background-color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .login-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Description section styles */
+        /* Description section styles */
+        .description-section {
+            float: right;
+            width: 300px;
+            margin-right: 20px;
+            padding: 40px;
+            /* Increase padding to increase height */
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .description-section h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        /* Remove numbering from the list */
+        .description-section ol {
+            list-style-type: none;
+            /* Remove default numbering */
+            padding-left: 20px;
+        }
+
+        .description-section li {
+            margin-bottom: 10px;
+        }
+
+        .login-section {
+            margin-left: 20px;
+        }
+
+        /* Adjustments for small screens */
+        @media screen and (max-width: 768px) {
+            .description-section {
+                float: none;
+                width: auto;
+                margin-right: 0;
+            }
+
+            .login-section {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>QuizGen</h1>
+        <p>Welcome to Our Project</p>
+    </header>
+
+    <main>
+        <section class="description-section">
+            <h2>How to Use QuizGen:</h2>
+            <ol>
+                <li>Step 1: Choose the test name.</li>
+                <li>   </li>
+                <li>Step 2: Select a text file or enter text</li>
+                <li>Step 3: Select the number of questions.</li>
+                <li>Step 4: Click on 'Generate'.</li>
+                <li>Step 5: Questions will be generated.</li>
+            </ol>
+        </section>
+
+        <section class="login-section">
+            <!-- User and Admin Login Links -->
+            <div class="login-links">
+                <a href="{{ url_for('admin_login') }}" class="admin-login">Admin Login</a>
+                <a href="{{ url_for('slogin2') }}" class="user-login">User Login</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Project Name. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

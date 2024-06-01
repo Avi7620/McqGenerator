@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated MCQs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Define CSS for hiding the correct answer initially */
+        .hidden-answer {
+            display: none;
+            color: green; /* Change color of correct answer */
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Style for MCQ container */
+        .mcq {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Style for question */
+        .mcq p {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* Style for options */
+        .mcq ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .mcq ul li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .mcq ul li input[type="radio"] {
+            margin-right: 5px;
+        }
+    </style>
+    <script>
+        // JavaScript function to toggle the visibility of the correct answer
+        function toggleAnswer(index) {
+            var answer = document.getElementById('correct-answer-' + index);
+            if (answer.style.display === 'none') {
+                answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
+            }
+        }
+
+        // JavaScript function to submit the exam and calculate the score
+        function submitExam(totalQuestions) {
+            var correctAnswers = 0;
+
+            // Loop through each MCQ
+            for (var index = 1; index <= totalQuestions; index++) {
+                var selectedAnswer = document.querySelector('input[name="answer-' + index + '"]:checked');
+                if (selectedAnswer) {
+                    var answerIndex = parseInt(selectedAnswer.value);
+                    var correctIndex = parseInt(document.getElementById('correct-answer-' + index).getAttribute('data-correct-index'));
+                    // Check if the selected answer index matches the correct answer index
+                    if (answerIndex === correctIndex) {
+                        correctAnswers++;
+                    }
+                }
+            }
+
+            // Display the score
+            var score = (correctAnswers / totalQuestions) * 100;
+
+            // Redirect to the new page with the score
+            window.location.href = "/exam_completed?score=" + score.toFixed(2);
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Generated MCQs</h1>
+    <div>
+        <form>
+            {% for mcq in mcqs %}
+                <div class="mcq">
+                    <p><strong>{{ mcq.question }}</strong></p>
+                    <ul>
+                        <li>
+                            
+                            <span>1.</span> {{ mcq.choice1 }}
+                        </li>
+                        <li>
+                            
+                            <span>2.</span> {{ mcq.choice2 }}
+                        </li>
+                        <li>
+                            
+                            <span>3.</span> {{ mcq.choice3 }}
+                        </li>
+                        <li>
+                            
+                            <span>4.</span> {{ mcq.choice4 }}
+                        </li>
+                    </ul>
+                    <!-- Button to toggle the correct answer visibility -->
+                    <button type="button" onclick="toggleAnswer({{ mcq.id }})">Show Correct Answer</button>
+                    <div id="correct-answer-{{ mcq.id }}" class="hidden-answer" data-correct-index="{{ mcq.correct_answer }}">Correct Answer: {{ mcq.correct_answer }}</div>
+                </div>
+            {% endfor %}
+
+    </div>
+</body>
+</html>

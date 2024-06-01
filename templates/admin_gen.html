@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated MCQs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Define CSS for hiding the correct answer initially */
+        .hidden-answer {
+            display: none;
+            color: green; /* Change color of correct answer */
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Style for MCQ container */
+        .mcq {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Style for question */
+        .mcq p {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* Style for options */
+        .mcq ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .mcq ul li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .mcq ul li input[type="radio"] {
+            margin-right: 5px;
+        }
+    </style>
+    <script>
+        // JavaScript function to toggle the visibility of the correct answer
+        function toggleAnswer(index) {
+            var answer = document.getElementById('correct-answer-' + index);
+            if (answer.style.display === 'none') {
+                answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
+            }
+        }
+
+        // JavaScript function to submit the exam and calculate the score
+        function submitExam(totalQuestions) {
+    var correctAnswers = 0;
+
+    // Loop through each MCQ
+    for (var index = 1; index <= totalQuestions; index++) {
+        var selectedAnswer = document.querySelector('input[name="answer-' + index + '"]:checked');
+        if (selectedAnswer) {
+            var answerIndex = parseInt(selectedAnswer.value);
+            var correctIndex = parseInt(document.getElementById('correct-answer-' + index).getAttribute('data-correct-index'));
+            // Check if the selected answer index matches the correct answer index
+            if (answerIndex === correctIndex) {
+                correctAnswers++;
+            }
+        }
+    }
+
+    // Display the score
+    var score = (correctAnswers / totalQuestions) * 100;
+
+    // Redirect to the new page with the score
+    window.location.href = "/exam_completed?score=" + score.toFixed(2);
+}
+
+    </script>
+</head>
+<body>
+    <h1>Generated MCQs</h1>
+    <div>
+        <form>
+            {% for mcq in mcqs %}
+                <div class="mcq">
+                    <p><strong>{{ mcq.index }}) {{ mcq.question }}</strong></p>
+                    <ul>
+                        {% for choice in mcq.choices %}
+                            <li>
+                                <input type="radio" name="answer-{{ mcq.index }}" value="{{ loop.index }}"> 
+                                <span>{{ loop.index }}.</span> {{ choice }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    
+                    
+                    <!-- Add a link to reveal the correct answer -->
+                    <p><a href="javascript:void(0);" onclick="toggleAnswer({{ mcq.index }});">Show Correct Answer</a></p>
+                    <!-- Define the correct answer with a class to hide it initially -->
+                    <p id="correct-answer-{{ mcq.index }}" class="hidden-answer" data-correct-index="{{ mcq.choices.index(mcq.correct_answer) + 1 }}">{{ mcq.correct_answer }}</p>
+                </div>
+            {% endfor %}
+            <!-- Button to submit the exam -->
+            <button type="button" onclick="submitExam({{ mcqs|length }})">Submit Exam</button>
+        </form>
+        <!-- Add a button to download PDF -->
+        <form action="/download_pdf" method="post">
+            <button type="submit">Download MCQs as PDF</button>
+        </form>
+    </div>
+</body>
+</html>

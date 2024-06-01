@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff; /* Primary color for headings */
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .question p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333; /* Dark color for question text */
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+            margin-left: 20px;
+        }
+
+        .options li {
+            margin-bottom: 10px;
+            counter-increment: option;
+        }
+
+        .options li::before {
+            content: counter(option) ". ";
+            font-weight: bold;
+            color: #0e0e0f; /* Primary color for option numbers */
+        }
+
+        .correct-answer {
+            font-size: 16px;
+            font-style: italic;
+            color: green;
+            display: none;
+        }
+
+        .separator {
+            border-top: 1px solid #ccc;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .download-button {
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website Title</title>
+    <link rel="icon" type="image/x-icon" href="static\favicon.png">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>MCQ Questions</h1>
+
+        <!-- Assuming mcqs is a list of dictionaries containing MCQ details -->
+        {% for mcq in mcqs %}
+        <div class="question">
+            <p> {{ loop.index }}. {{ mcq.question }}</p>
+            <ul class="options">
+                <li>{{ mcq.choice1 }}</li>
+                <li>{{ mcq.choice2 }}</li>
+                <li>{{ mcq.choice3 }}</li>
+                <li>{{ mcq.choice4 }}</li>
+            </ul>
+            <!-- Button to reveal correct option -->
+            <button onclick="revealAnswer(this)">Show Correct Option</button>
+            <!-- Display the correct option -->
+            <p class="correct-answer">Correct Option: {{ mcq.correct_answer }}</p>
+        </div>
+        <!-- Horizontal line between questions -->
+        <div class="separator"></div>
+        {% endfor %}
+
+        <!-- Button to download PDF -->
+        <button type="button" id="downloadButton">Download PDF</button>
+    </div>
+
+    <!-- Include the jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', function () {
+            // Alert message indicating that the PDF is being generated
+            alert('Generating PDF. Please wait...');
+    
+            // Create a new jsPDF instance
+            var doc = new jsPDF();
+    
+            // Set the title for the PDF
+            doc.text("Generated MCQs", 10, 10);
+    
+            // Iterate through each question and add it to the PDF
+            var yoffset = 20;
+            var mcqElements = document.querySelectorAll('.question');
+    
+            mcqElements.forEach(function (mcqElement, index) {
+                var question = mcqElement.querySelector('p').textContent;
+                var options = mcqElement.querySelectorAll('.options li');
+                var optionText = [];
+    
+                options.forEach(function (option) {
+                    optionText.push(option.textContent);
+                });
+    
+                doc.text((index + 1) + ". " + question, 10, yoffset);
+                yoffset += 10;
+    
+                optionText.forEach(function (option) {
+                    doc.text(option, 15, yoffset);
+                    yoffset += 10;
+                });
+    
+                yoffset += 10;
+            });
+    
+            // Save the PDF with a filename
+            doc.save('generated_mcqs2.pdf');
+    
+            // Alert message indicating that the PDF has been generated and downloaded
+            alert('PDF generated and downloaded successfully!');
+        });
+    
+        function revealAnswer(button) {
+            // Traverse to the parent element and find the correct answer paragraph within it
+            var parentElement = button.parentNode;
+            var correctAnswerParagraph = parentElement.querySelector('.correct-answer');
+    
+            // Toggle the visibility of the correct answer paragraph
+            if (correctAnswerParagraph.style.display === 'block') {
+                correctAnswerParagraph.style.display = 'none';
+            } else {
+                correctAnswerParagraph.style.display = 'block';
+            }
+        }
+    </script>
+    
+</body>
+
+</html>

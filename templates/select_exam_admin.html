@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        select {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Take Test</h1>
+    <form>
+        <label for="test">Select Test:</label>
+        <select id="test">
+            <option value="" disabled selected>Select Test</option>
+            <!-- Test options will be populated dynamically -->
+        </select>
+        <button type="button" onclick="openUserExam()">View Test</button>
+    </form>
+
+    <script>
+        // Fetch test names from the server and populate the dropdown
+        function fetchTestNames() {
+            fetch('/get_test_names')
+            .then(response => response.json())
+            .then(data => {
+                const selectBox = document.getElementById("test");
+                data.forEach(test => {
+                    const option = document.createElement("option");
+                    option.value = test;
+                    option.text = test;
+                    selectBox.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching test names:', error));
+        }
+
+        // Call the fetchTestNames function when the page loads
+        window.onload = fetchTestNames;
+
+        function openUserExam() {
+            var selectBox = document.getElementById("test");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            
+            if (selectedValue) {
+                // Redirect to user_exam.html with the selected test name as a query parameter
+                window.location.href = "/admin_exam.html?test=" + selectedValue;
+            } else {
+                alert("Please select a test.");
+            }
+        }
+    </script>
+</body>
+</html>

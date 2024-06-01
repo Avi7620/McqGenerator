@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Exam Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center; /* Align all content center */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #timer {
+    position: fixed;
+    top: 40px;
+    right: 150px; /* Adjust the right property to move the timer to the left */
+    background-color: #e85151;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+        .question {
+            margin: 0 auto; /* Center the question div */
+            text-align: left; /* Align text inside question div to left */
+            max-width: 600px; /* Adjust max width of question div */
+        }
+
+        .question p {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px auto; /* Center the horizontal line */
+            max-width: 600px; /* Adjust max width of horizontal line */
+        }
+
+        #totalQuestions {
+            font-weight: bold;
+            color: blue;
+        }
+
+        #submitBtn {
+            display: inline-block; /* Display submit button as inline-block */
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px; /* Add margin to the top of submit button */
+        }
+
+        #submitBtn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Submit Exam</h1>
+
+    <div id="timer">Time Left: <span id="timeLeft"></span></div>
+
+    <form action="{{ url_for('submit_exam') }}" method="post" id="examForm">
+        <h4>Question <span id="currentQuestion">1</span> of <span id="totalQuestions"></span></h4>
+        {% for mcq in mcqs %}
+        <div class="question">
+            <p>{{ loop.index }}: {{ mcq.question }}</p>
+            {% set option_number = 65 %}
+            {% for option in [mcq.choice1, mcq.choice2, mcq.choice3, mcq.choice4] %}
+                <input type="radio" name="answer_{{ mcq.id }}" value="{{ option }}"> {{ option|capitalize }}<br>
+                {% set option_number = option_number + 0 %}
+            {% endfor %}
+        </div>
+        <hr>
+        {% endfor %}
+        <!-- Ensure that the name attribute matches the one used in the Flask route -->
+        <input type="hidden" name="total_rendered_questions" id="total_rendered_questions">
+        <input type="hidden" name="correct_answers" id="correct_answers" value="0">
+        <input type="hidden" name="wrong_answers" id="wrong_answers" value="0">
+        <button id="submitBtn" type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Count the number of questions
+            var totalQuestions = document.querySelectorAll('.question').length;
+            document.getElementById('totalQuestions').textContent = totalQuestions;
+            // Set the value of the hidden input field
+            document.getElementById('total_rendered_questions').value = totalQuestions;
+
+            // Question counter
+            var currentQuestion = 0;
+            document.getElementById('currentQuestion').textContent = currentQuestion;
+
+            // Calculate total time based on the number of questions
+            var timeLimit = totalQuestions * 60 * 2; // Double the number of minutes per question
+            var display = document.getElementById('timeLeft');
+            startTimer(timeLimit, display);
+
+            // Add event listener to each radio button to update the current question
+            var radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(function (radio) {
+                radio.addEventListener('click', function () {
+                    currentQuestion++;
+                    document.getElementById('currentQuestion').textContent = currentQuestion;
+                });
+            });
+        });
+
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    document.getElementById('examForm').submit();
+                }
+            }, 1000);
+        }
+
+        function updateScore(selectedOption, correctAnswer) {
+            if (selectedOption === correctAnswer) {
+                var correctCount = parseInt(document.getElementById('correct_answers').value);
+                document.getElementById('correct_answers').value = correctCount + 1;
+            } else {
+                var wrongCount = parseInt(document.getElementById('wrong_answers').value);
+                document.getElementById('wrong_answers').value = wrongCount + 1;
+            }
+        }
+
+        // Add event listener to each radio button to update the current question and score
+        var radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(function (radio) {
+            radio.addEventListener('click', function () {
+                currentQuestion++;
+                document.getElementById('currentQuestion').textContent = currentQuestion;
+                
+                // Extract the correct answer from the HTML element
+                var correctAnswer = this.getAttribute('data-correct-answer');
+                // Update the score
+                updateScore(this.value, correctAnswer);
+            });
+        });
+    </script>
+
+</body>
+
+</html>

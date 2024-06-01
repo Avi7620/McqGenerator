@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            position: relative; /* Add position relative to li */
+        }
+        strong {
+            color: #333;
+        }
+        .delete-form {
+            position: absolute; /* Make the form absolute within li */
+            top: 20%; /* Move form to vertically center of li */
+            right: 20px; /* Align form to the right side */
+            transform: translateY(-50%); /* Adjust vertical position */
+        }
+        .delete-btn {
+            background-color: #ff6666;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact List</h1>
+        <ul>
+            {% for contact in contacts %}
+            <li>
+                <strong>Name:</strong> {{ contact.name }} <br>
+                <br>
+                <strong>Email:</strong> {{ contact.email }} <br>
+                <br>
+                <strong>Message:</strong> {{ contact.message }}
+                <form class="delete-form" action="{{ url_for('delete_contact', contact_id=contact.id) }}" method="POST">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+                
+            </li>
+            <hr>
+            {% endfor %}
+        </ul>
+    </div>
+    
+</body>
+</html>
