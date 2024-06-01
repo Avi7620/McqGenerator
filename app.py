@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session,jsonify,send_file,flash,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
-import os
+
 import nltk 
 import yake
 import requests
@@ -603,5 +603,5 @@ def delete_score(score_id):
 with app.app_context():
     db.create_all()
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    db.create_all()
+    app.run(debug=True)
